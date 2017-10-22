@@ -1,0 +1,43 @@
+{
+    "info": {
+	"title": "hoge vs foo",
+	"date-start": "2017-10-22T21:43:00",
+	"date-end": "2017-10-22T21:59:00",
+	"players": [
+	    {"name": "hoge", "color": "yellow"},
+	    {"name": "foo", "color": "green"}
+	}
+    },
+    "placements" [
+	{
+	    "action": "firstPlace",
+	    "tile": "D",
+	    "tilePlacement": {"rotation": 3}
+	},
+	{
+	    "action": "playerPlace",
+	    "tile": "E",
+	    "player": "hoge",
+	    "tilePlacement": {"x": 0, "y": 1, "rotation": 2},
+	    "meeplePlacement": {"segmentType": "city", "segmentIndex": 0}
+	},
+	{
+	    "action": "skip",
+	    "tile": "C",
+	    "player": "foo",
+	},
+	{
+	    "action": "playerPlace",
+	    "tile": "D",
+	    "player": "foo",
+	    "tilePlacement": {"x": 0, "y": -1, "rotation": 2},
+	    "meeplePlacement": {"segmentType": "city", "segmentIndex": 0}
+	},
+	{
+	    "action": "playerPlace",
+	    "tile": "A",
+	    "player": "hoge",
+	    "tilePlacement": {"x": -1, "y": -1, "rotation": 2}
+	}
+    ]
+}
