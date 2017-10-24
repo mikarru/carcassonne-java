@@ -6,9 +6,9 @@
 	"players": [
 	    {"name": "hoge", "color": "yellow"},
 	    {"name": "foo", "color": "green"}
-	}
+	]
     },
-    "placements" [
+    "placements": [
 	{
 	    "action": "firstPlace",
 	    "tile": "D",
@@ -24,7 +24,7 @@
 	{
 	    "action": "skip",
 	    "tile": "C",
-	    "player": "foo",
+	    "player": "foo"
 	},
 	{
 	    "action": "playerPlace",
