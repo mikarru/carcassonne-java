@@ -3,7 +3,21 @@ package com.example.carcassonne;
 
 public class Segment {
     public static enum SegmentType {
-	CITY, ROAD, FIELD, CLOISTER
+	CITY, ROAD, FIELD, CLOISTER;
+
+        public static SegmentType fromString(String s) {
+            switch (s) {
+            case "city":
+                return CITY;
+            case "road":
+                return ROAD;
+            case "field":
+                return FIELD;
+            case "cloister":
+                return CLOISTER;
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public static Segment newCity(int index, boolean pennant) {

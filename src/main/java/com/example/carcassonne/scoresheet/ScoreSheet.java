@@ -5,7 +5,19 @@ import static com.example.carcassonne.Segment.SegmentType;
 
 public class ScoreSheet {
     public static enum ActionType {
-	FIRST_PLACE, PLAYER_PLACE, SKIP
+	FIRST_PLACE, PLAYER_PLACE, SKIP;
+
+        public static ActionType fromString(String s) {
+            if (s.equals("firstPlace")) {
+                return FIRST_PLACE;
+            } else if (s.equals("playerPlace")) {
+                return PLAYER_PLACE;
+            } else if (s.equals("skip")) {
+                return SKIP;
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
     }
 
 
