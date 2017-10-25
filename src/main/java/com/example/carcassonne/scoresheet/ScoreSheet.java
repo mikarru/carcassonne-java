@@ -31,6 +31,14 @@ public class ScoreSheet {
 	    this.y = y;
 	    this.rotation = rotation;
 	}
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("TilePlacement[x=").append(x).append(", y=").append(y)
+                .append(", rotation=").append(rotation).append("]");
+            return sb.toString();
+        }
     }
 
     public static class MeeplePlacement {
@@ -41,6 +49,14 @@ public class ScoreSheet {
 	    this.segmentType = type;
 	    this.segmentIndex = segmentIndex;
 	}
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("MeeplePlacement[type=").append(segmentType)
+                .append(", index=").append(segmentIndex).append("]");
+            return sb.toString();
+        }
     }
 
     public static class Placement {
@@ -58,6 +74,25 @@ public class ScoreSheet {
 	    this.tilePlacement = tilePlacement;
 	    this.meeplePlacement = meeplePlacement;
 	}
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Placement[\n")
+                .append("  action=").append(action).append(",\n")
+                .append("  tileName=").append(tileName).append(",\n");
+            if (playerName != null) {
+                sb.append("  player=").append(playerName).append(",\n");
+            }
+            if (tilePlacement != null) {
+                sb.append("  tilePlacement=").append(tilePlacement).append(",\n");
+            }
+            if (meeplePlacement != null) {
+                sb.append("  meeplePlacement=").append(meeplePlacement).append(",\n");
+            }
+            sb.append("]");
+            return sb.toString();
+        }
     }
 
     public static class Player {
@@ -83,5 +118,14 @@ public class ScoreSheet {
 
     public Player[] getPlayers() {
 	return players;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Placement p : placements) {
+            sb.append(p).append("\n");
+        }
+        return sb.toString();
     }
 }
