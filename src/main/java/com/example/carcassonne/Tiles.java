@@ -4,157 +4,155 @@ import static com.example.carcassonne.BorderType.CITY;
 import static com.example.carcassonne.BorderType.FIELD;
 import static com.example.carcassonne.BorderType.ROAD;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 
 public class Tiles {
-    public static Tile newA(int id) {
-        final String name = "A";
-        BorderType[] borderTypes = new BorderType[] {
-            FIELD, FIELD, ROAD, FIELD
-        };
-        Segment[] citySegments = new Segment[0];
-        Segment[] roadSegments = new Segment[] {Segment.newRoad(0)};
-        Segment[] fieldSegments = new Segment[] {Segment.newField(0)};
-        Segment cloisterSegment = Segment.newCloister(0);
-        int[] cities = new int[] {-1, -1, -1, -1};
-        int[] roads = new int[] {-1, -1, 0, -1};
-        int[] fields = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
-        return new Tile(id, name, borderTypes,
-                citySegments, roadSegments, fieldSegments, cloisterSegment,
-                cities, roads, fields);
+    static class TileParts {
+        public String name;
+        public int[] cities;
+        public int[] roads;
+        public int[] fields;
+        public boolean hasCloister;
+        public boolean[] pennants;
+
+        public TileParts(String name, int[] cities, int[] roads, int[] fields,
+            boolean hasCloister, boolean[] pennants) {
+            this.name = name;
+            this.cities = cities;
+            this.roads = roads;
+            this.fields = fields;
+            this.hasCloister = hasCloister;
+            this.pennants = pennants;
+        }
     }
 
-    public static Tile newB(int id) {
-        final String name = "B";
-        BorderType[] borderTypes = new BorderType[] {
-            FIELD, FIELD, FIELD, FIELD
-        };
-        Segment[] citySegments = new Segment[0];
-        Segment[] roadSegments = new Segment[0];
-        Segment[] fieldSegments = new Segment[] {Segment.newField(0)};
-        Segment cloisterSegment = Segment.newCloister(0);
-        int[] cities = new int[] {-1, -1, -1, -1};
-        int[] roads = new int[] {-1, -1, -1, -1};
-        int[] fields = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
-        return new Tile(id, name, borderTypes,
-                citySegments, roadSegments, fieldSegments, cloisterSegment,
-                cities, roads, fields);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final Map<String, TileParts> PARTS_MAP;
+
+    static {
+        // TODO
+        String path = "hoge";
+        try {
+            PARTS_MAP = readTileDefinitions(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static Tile newC(int id) {
-        final String name = "C";
-        BorderType[] borderTypes = new BorderType[] {
-            CITY, CITY, CITY, CITY
-        };
-        Segment[] citySegments = new Segment[] {Segment.newCity(0, true)};
-        Segment[] roadSegments = new Segment[0];
-        Segment[] fieldSegments = new Segment[0];
-        Segment cloisterSegment = null;
-        int[] cities = new int[] {0, 0, 0, 0};
-        int[] roads = new int[] {-1, -1, -1, -1};
-        int[] fields = new int[] {-1, -1, -1, -1, -1, -1, -1, -1};
-        return new Tile(id, name, borderTypes,
-                citySegments, roadSegments, fieldSegments, cloisterSegment,
-                cities, roads, fields);
-    }
-    
-    public static Tile newD(int id) {
-        final String name = "D";
-        BorderType[] borderTypes = new BorderType[] {
-            ROAD, CITY, ROAD, FIELD
-        };
-        Segment[] citySegments = new Segment[] {Segment.newCity(0, false)};
-        Segment[] roadSegments = new Segment[] {Segment.newRoad(0)};
-        Segment[] fieldSegments = new Segment[] {Segment.newField(0), Segment.newField(1)};
-        Segment cloisterSegment = null;
-        int[] cities = new int[] {-1, 0, -1, -1};
-        int[] roads = new int[] {0, -1, 0, -1};
-        int[] fields = new int[] {0, 1, -1, -1, 1, 0, 0, 0};
-        return new Tile(id, name, borderTypes,
-                citySegments, roadSegments, fieldSegments, cloisterSegment,
-                cities, roads, fields);
+    static Map<String, TileParts> readTileDefinitions(String path) throws IOException {
+        File file = new File(path);
+        Map<String, TileParts> map = new HashMap<>();
+        JsonNode rootNode = OBJECT_MAPPER.readTree(file);
+        Iterator<JsonNode> iter = rootNode.elements();
+        while (iter.hasNext()) {
+            JsonNode definition = iter.next();
+            String name = definition.get("name").asText();
+            int[] cities = getAsIntArray(definition, "cities");
+            int[] roads = getAsIntArray(definition, "roads");
+            int[] fields = getAsIntArray(definition, "fields");
+            boolean hasCloister = definition.get("hasCloister").asBoolean();
+            boolean[] pennants = getAsBooleanArray(definition, "pennants");
+            map.put(name, new TileParts(name, cities, roads, fields, hasCloister, pennants));
+        }
+        return map;
     }
 
-    public static Tile newE(int id) {
-        return null;
+    private static int[] getAsIntArray(JsonNode node, String field) {
+        JsonNode child = node.get(field);
+        List<Integer> list = new ArrayList<>();
+        Iterator<JsonNode> iter = child.elements();
+        while (iter.hasNext()) {
+            JsonNode n = iter.next();
+            list.add(n.asInt());
+        }
+        int[] a = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            a[i] = list.get(i);
+        }
+        return a;
     }
 
-    public static Tile newF(int id) {
-        return null;
-    }
-
-    public static Tile newG(int id) {
-        return null;
-    }
-
-    public static Tile newH(int id) {
-        return null;
-    }
-
-    public static Tile newI(int id) {
-        return null;
-    }
-
-    public static Tile newJ(int id) {
-        return null;
-    }
-
-    public static Tile newK(int id) {
-        return null;
-    }
-
-    public static Tile newL(int id) {
-        return null;
-    }
-
-    public static Tile newM(int id) {
-        return null;
-    }
-
-    public static Tile newN(int id) {
-        return null;
-    }
-
-    public static Tile newO(int id) {
-        return null;
-    }
-
-    public static Tile newP(int id) {
-        return null;
-    }
-
-    public static Tile newQ(int id) {
-        return null;
-    }
-
-    public static Tile newR(int id) {
-        return null;
-    }
-
-    public static Tile newS(int id) {
-        return null;
-    }
-
-    public static Tile newT(int id) {
-        return null;
-    }
-    
-    public static Tile newU(int id) {
-        return null;
-    }
-    
-    public static Tile newV(int id) {
-        return null;
-    }
-    
-    public static Tile newW(int id) {
-        return null;
-    }
-
-    public static Tile newX(int id) {
-        return null;
+    private static boolean[] getAsBooleanArray(JsonNode node, String field) {
+        JsonNode child = node.get(field);
+        List<Boolean> list = new ArrayList<>();
+        Iterator<JsonNode> iter = child.elements();
+        while (iter.hasNext()) {
+            JsonNode n = iter.next();
+            list.add(n.asBoolean());
+        }
+        boolean[] a = new boolean[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            a[i] = list.get(i);
+        }
+        return a;
     }
 
     public static Tile newFromName(int id, String name) {
-        return null;
+        TileParts parts = PARTS_MAP.get(name);
+        if (parts == null) {
+            throw new IllegalArgumentException("Unknown tile name '" + name + "'");
+        }
+        return constructTile(id, parts);
+    }
+
+    static Tile constructTile(int id, TileParts parts) {
+        int citySegmentN = 0;
+        for (int city : parts.cities) {
+            if (citySegmentN < city + 1) {
+                citySegmentN = city + 1;
+            }
+        }
+        Segment[] citySegments = new Segment[citySegmentN];
+        for (int i = 0; i < citySegmentN; i++) {
+            citySegments[i] = Segment.newCity(i, parts.pennants[i]);
+        }
+
+        int roadSegmentN = 0;
+        for (int road : parts.roads) {
+            if (roadSegmentN < road + 1) {
+                roadSegmentN = road + 1;
+            }
+        }
+        Segment[] roadSegments = new Segment[roadSegmentN];
+        for (int i = 0; i < roadSegmentN; i++) {
+            roadSegments[i] = Segment.newRoad(i);
+        }
+
+        int fieldSegmentN = 0;
+        for (int field : parts.fields) {
+            if (fieldSegmentN < field + 1) {
+                fieldSegmentN = field + 1;
+            }
+        }
+        Segment[] fieldSegments = new Segment[fieldSegmentN];
+        for (int i = 0; i < fieldSegmentN; i++) {
+            fieldSegments[i] = Segment.newField(i);
+        }
+
+        Segment cloisterSegment = parts.hasCloister ? Segment.newCloister(0) : null;
+
+        BorderType[] borderTypes = new BorderType[4];
+        for (int d = 0; d < 4; d++) {
+            if (parts.cities[d] != -1) {
+                borderTypes[d] = CITY;
+            } else if (parts.roads[d] != -1) {
+                borderTypes[d] = ROAD;
+            } else {
+                borderTypes[d] = FIELD;
+            }
+        }
+        return new Tile(id, parts.name, borderTypes,
+                citySegments, roadSegments, fieldSegments, cloisterSegment,
+                parts.cities, parts.roads, parts.fields);
     }
 }
