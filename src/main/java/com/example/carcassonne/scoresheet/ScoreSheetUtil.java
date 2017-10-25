@@ -47,7 +47,7 @@ public class ScoreSheetUtil {
             JsonNode playerNode = iter.next();
             players.add(new Player(getAsString(playerNode, "name"), getAsString(playerNode, "color")));
         }
-        return (Player[]) players.toArray();
+        return players.toArray(new Player[players.size()]);
     }
 
     private static Placement[] constractPlacements(JsonNode placementsNode)
@@ -61,7 +61,7 @@ public class ScoreSheetUtil {
             JsonNode placementNode = iter.next();
             placements.add(constractPlacement(placementNode));
         }
-        return (Placement[]) placements.toArray();
+        return placements.toArray(new Placement[placements.size()]);
     }
 
     private static Placement constractPlacement(JsonNode placementNode)

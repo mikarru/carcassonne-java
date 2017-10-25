@@ -37,6 +37,14 @@ public class PlacementValidator {
         public String getMessage() {
             return message;
         }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Result[isValid: ").append(isValid)
+                .append(", message: ").append(message);
+            return sb.toString();
+        }
     }
 
     public Result validate(ScoreSheet scoreSheet) {
@@ -119,5 +127,17 @@ public class PlacementValidator {
             tiles.add(Tiles.newFromName(idGen.newId(), placement.tileName));
         }
         return new SequentialTileGenerator(tiles);
+    }
+
+    public static void main(String[] args) throws Exception {
+        if (args.length != 1) {
+            System.err.println("Usage: <json-path>");
+            System.exit(1);
+        }
+
+        String path = args[0];
+        ScoreSheet s = ScoreSheetUtil.readFromFile(path);
+        Result r = new PlacementValidator().validate(s);
+        System.out.println(r);
     }
 }
