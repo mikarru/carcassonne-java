@@ -26,6 +26,7 @@ public class Tile {
         this.name = name;
         this.citySegments = citySegments;
         this.roadSegments = roadSegments;
+        this.fieldSegments = fieldSegments;
         this.cloisterSegment = cloisterSegment;
         this.cities = cities;
         this.roads = roads;
