@@ -1,6 +1,7 @@
 package com.example.carcassonne;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -101,9 +102,27 @@ public abstract class Region {
         }
     }
 
-    // TODO
     public List<Integer> getWinningMeeples() {
-        return null;
+        int[] counts = new int[Consts.MAX_MEEPLE_COLOR];
+        for (Segment s : onMeepleSegments) {
+            counts[s.getPlacedMeeple()]++;
+        }
+        int max = 0;
+        for (int i = 0; i < counts.length; i++) {
+            if (counts[i] > max) {
+                max = counts[i];
+            }
+        }
+        if (max == 0) {
+            return Collections.<Integer>emptyList();
+        }
+        List<Integer> meeples = new ArrayList<>(counts.length);
+        for (int i = 0; i < counts.length; i++) {
+            if (counts[i] == max) {
+                meeples.add(i);
+            }
+        }
+        return meeples;
     }
     
     public abstract boolean isCompleted();
