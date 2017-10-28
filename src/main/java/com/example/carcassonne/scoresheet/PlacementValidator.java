@@ -76,14 +76,16 @@ public class PlacementValidator {
                 return new Result(false, "firstPlace action occures twice");
             case SKIP:
                 if (board.hasPossiblePlacement(tile)) {
-                    String message = "" + i + " th tile is skipped neverthless it can be placed";
+                    String message = "" + i + "th tile is skipped neverthless it can be placed";
                     return new Result(false, message);
                 }
                 break;
             case PLAYER_PLACE:
                 TilePlacement tileP = placement.tilePlacement;
                 if (!board.canPlaceTile(tileP.x, tileP.y, tileP.rotation, tile)) {
-                    String message = "" + i + " th tile can't be placed with specified way";
+                    String message = "" + i + "th tile " + tile.getName() +
+                        " can't be placed with x=" + tile.getX() +
+                        ", y=" + tile.getY() + ", rotation=" + tile.getRotation();
                     return new Result(false, message);
                 }
                 List<Segment> segments = board.placeTile(tileP.x, tileP.y, tileP.rotation, tile, context);
@@ -92,7 +94,8 @@ public class PlacementValidator {
                     int meepleColor = playerMap.get(placement.playerName);
                     if (context.getHoldingMeepleCount(meepleColor) == 0) {
                         String message = "Player '" + placement.playerName +
-                            "' tries to place meeple to " + i + "th tile, neverthless he/she has no meeple";
+                            "' tries to place meeple to " + i + "th tile " + tile.getName() +
+                            ", neverthless he/she has no meeple";
                         return new Result(false, message);
                     }
                     Segment targetSegment = null;
@@ -105,7 +108,7 @@ public class PlacementValidator {
                     }
                     if (targetSegment == null) {
                         String message = "Player '" + placement.playerName +
-                            "' tries to place meeple to wrong segment of " + i + " th tile";
+                            "' tries to place meeple to wrong segment of " + i + "th tile";
                         return new Result(false, message);
                     }
                     board.placeMeeple(targetSegment, meepleColor, context);
@@ -137,6 +140,7 @@ public class PlacementValidator {
 
         String path = args[0];
         ScoreSheet s = ScoreSheetUtil.readFromFile(path);
+        System.out.println(s);
         Result r = new PlacementValidator().validate(s);
         System.out.println(r);
     }
