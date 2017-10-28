@@ -4,7 +4,7 @@
 	"cities": [-1, -1, -1, -1],
 	"roads": [-1, -1, 0, -1],
 	"fields": [0, 0, 0, 0, 0, 0, 0, 0],
-	"hasCloiser": true,
+	"hasCloister": true,
 	"pennants": []
     },
     {
@@ -12,7 +12,31 @@
 	"cities": [-1, -1, -1, -1],
 	"roads": [-1, -1, -1, -1],
 	"fields": [0, 0, 0, 0, 0, 0, 0, 0],
-	"hasCloiser": true,
+	"hasCloister": true,
 	"pennants": []
+    },
+    {
+	"name": "C",
+	"cities": [0, 0, 0, 0],
+	"roads": [-1, -1, -1, -1],
+	"fields": [-1, -1, -1, -1, -1, -1, -1, -1],
+	"hasCloister": false,
+	"pennants": [true]
+    },
+    {
+	"name": "D",
+	"cities": [-1, 0, -1, -1],
+	"roads": [0, -1, 0, -1],
+	"fields": [0, 1, -1, -1, 1, 0, 0, 0],
+	"hasCloister": false,
+	"pennants": [false]
+    },
+    {
+	"name": "E",
+	"cities": [0, -1, -1, -1],
+	"roads": [-1, -1, -1, -1],
+	"fields": [-1, -1, 0, 0, 0, 0, 0, 0],
+	"hasCloister": false,
+	"pennants": [false]
     }
 ]
