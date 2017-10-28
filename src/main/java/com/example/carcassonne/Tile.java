@@ -24,6 +24,7 @@ public class Tile {
                 int[] cities, int[] roads, int[] fields) {
         this.id = id;
         this.name = name;
+        this.borderTypes = borderTypes;
         this.citySegments = citySegments;
         this.roadSegments = roadSegments;
         this.fieldSegments = fieldSegments;
@@ -43,6 +44,12 @@ public class Tile {
         if (cloisterSegment != null) {
             cloisterSegment.setTile(this);
         }
+    }
+
+    // for testing only
+    Tile(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public int getId() {
@@ -115,27 +122,57 @@ public class Tile {
         return borderTypes[d];
     }
 
-    // topTileをこのタイルの上に回転rした状態でで置くことができるかどうか
+    // topTileをこのタイルの上に回転rした状態で置くことができるかどうか
     public boolean canTopAdjacentWith(Tile topTile, int r) {
-        // TODO
-        return false;
-    }
-
-    // bottomTileをこのタイルの下に回転rした状態で置くことができるかどうか
-    public boolean canBottomAdjacentWith(Tile bottomTile, int r) {
-        // TODO
-        return false;
+        return canAdjacentWith(0, topTile, r);
     }
 
     // rightTileをこのタイルの右に回転rした状態で置くことができるかどうか
     public boolean canRightAdjacentWith(Tile rightTile, int r) {
-        // TODO
-        return false;
+        return canAdjacentWith(1, rightTile, r);
+    }
+
+    // bottomTileをこのタイルの下に回転rした状態で置くことができるかどうか
+    public boolean canBottomAdjacentWith(Tile bottomTile, int r) {
+        return canAdjacentWith(2, bottomTile, r);
     }
 
     // leftTileをこのタイルの左に回転rした状態で置くことができるかどうか
     public boolean canLeftAdjacentWith(Tile leftTile, int r) {
-        // TODO
-        return false;
+        return canAdjacentWith(3, leftTile, r);
+    }
+
+    private boolean canAdjacentWith(int d, Tile tile, int r) {
+        BorderType myBorderType = getBorderType((d + 4 - rotation) % 4);
+        BorderType yourBorderType = tile.getBorderType((d + 2 + 4 - r) % 4);
+        return myBorderType == yourBorderType;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Tile[")
+            .append("id=").append(id).append(", ")
+            .append("name=").append(name).append(", ")
+            .append("x=").append(x).append(", ")
+            .append("y=").append(y).append(", ")
+            .append("rotation=").append(rotation)
+            .append("]");
+        return sb.toString();
+    }
+
+    public String toDetailedString() {
+        StringBuilder sb = new StringBuilder("Tile[")
+            .append("id=").append(id).append(", ")
+            .append("name=").append(name).append(", ")
+            .append("x=").append(x).append(", ")
+            .append("y=").append(y).append(", ")
+            .append("rotation=").append(rotation).append(", ")
+            .append("borderTypes=")
+            .append(borderTypes[0]).append(":")
+            .append(borderTypes[1]).append(":")
+            .append(borderTypes[2]).append(":")
+            .append(borderTypes[3])
+            .append("]");
+        return sb.toString();
     }
 }
