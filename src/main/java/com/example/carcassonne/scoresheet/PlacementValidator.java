@@ -84,8 +84,8 @@ public class PlacementValidator {
                 TilePlacement tileP = placement.tilePlacement;
                 if (!board.canPlaceTile(tileP.x, tileP.y, tileP.rotation, tile)) {
                     String message = "" + i + "th tile " + tile.getName() +
-                        " can't be placed with x=" + tile.getX() +
-                        ", y=" + tile.getY() + ", rotation=" + tile.getRotation();
+                        " can't be placed with x=" + tileP.x +
+                        ", y=" + tileP.y + ", rotation=" + tileP.rotation;
                     return new Result(false, message);
                 }
                 List<Segment> segments = board.placeTile(tileP.x, tileP.y, tileP.rotation, tile, context);
