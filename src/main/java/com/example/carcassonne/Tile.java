@@ -115,27 +115,29 @@ public class Tile {
         return borderTypes[d];
     }
 
-    // topTileをこのタイルの上に回転rした状態でで置くことができるかどうか
+    // topTileをこのタイルの上に回転rした状態で置くことができるかどうか
     public boolean canTopAdjacentWith(Tile topTile, int r) {
-        // TODO
-        return false;
+        return canAdjacentWith(0, topTile, r);
     }
 
     // bottomTileをこのタイルの下に回転rした状態で置くことができるかどうか
     public boolean canBottomAdjacentWith(Tile bottomTile, int r) {
-        // TODO
-        return false;
+        return canAdjacentWith(1, bottomTile, r);
     }
 
     // rightTileをこのタイルの右に回転rした状態で置くことができるかどうか
     public boolean canRightAdjacentWith(Tile rightTile, int r) {
-        // TODO
-        return false;
+        return canAdjacentWith(2, rightTile, r);
     }
 
     // leftTileをこのタイルの左に回転rした状態で置くことができるかどうか
     public boolean canLeftAdjacentWith(Tile leftTile, int r) {
-        // TODO
-        return false;
+        return canAdjacentWith(3, leftTile, r);
+    }
+
+    private boolean canAdjacentWith(int d, Tile leftTile, int r) {
+        BorderType myBorderType = getBorderType((d + 4 - rotation) % 4);
+        BorderType yourBorderType = leftTile.getBorderType((d + 2 + 4 - rotation) % 4);
+        return myBorderType == yourBorderType;
     }
 }
