@@ -52,7 +52,7 @@ public class Board {
         Set<BoardPosition> possiblePositions = positionManager.getPossiblePositions();
         for (BoardPosition pos : possiblePositions) {
             for (int rotation = 0; rotation < 4; rotation++) {
-                if (!isPossibleAdjacence(pos.getX(), pos.getY(), rotation, tile)) {
+                if (isPossibleAdjacence(pos.getX(), pos.getY(), rotation, tile)) {
                     return true;
                 }
             }
@@ -114,7 +114,7 @@ public class Board {
                 Tile aroundTile = aroundTiles[d];
                 int myD = (d + 4 - rotation) & 0x3;
                 if (citySegment.isAdjacentTo(myD)) {
-                    int yourD = (myD + 2 + 4 - aroundTile.getRotation()) & 0x3;
+                    int yourD = (d + 2 + 4 - aroundTile.getRotation()) & 0x3;
                     Segment yourSegment = aroundTile.getCitySegmentOfDirection(yourD);
                     adjacentRegions.add(yourSegment.getRegion());
                 }
@@ -147,7 +147,7 @@ public class Board {
                 Tile aroundTile = aroundTiles[d];
                 int myD = (d + 4 - rotation) & 0x3;
                 if (roadSegment.isAdjacentTo(myD)) {
-                    int yourD = (myD + 2 + 4 - aroundTile.getRotation()) & 0x3;
+                    int yourD = (d + 2 + 4 - aroundTile.getRotation()) & 0x3;
                     Segment yourSegment = aroundTile.getRoadSegmentOfDirection(yourD);
                     adjacentRegions.add(yourSegment.getRegion());
                 }
@@ -181,7 +181,7 @@ public class Board {
                 Tile aroundTile = aroundTiles[d / 2];
                 int myD = (d + 8 - rotation * 2) % 8;
                 if (fieldSegment.isAdjacentTo(myD)) {
-                    int yourD = (myD + 5 + 8 - aroundTile.getRotation() * 2) % 8;
+                    int yourD = (d + 5 + 8 - aroundTile.getRotation() * 2) % 8;
                     Segment yourSegment = aroundTile.getFieldSegmentOfDirection(yourD);
                     adjacentRegions.add(yourSegment.getRegion());
                 }
