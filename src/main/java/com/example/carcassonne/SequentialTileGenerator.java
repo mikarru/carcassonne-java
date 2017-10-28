@@ -10,33 +10,33 @@ public class SequentialTileGenerator implements TileGenerator {
     private int generated = 0;
 
     public SequentialTileGenerator(List<Tile> tiles) {
-	this.tiles = tiles;
-	this.iter = tiles.iterator();
+        this.tiles = tiles;
+        this.iter = tiles.iterator();
     }
 
     @Override
     public boolean hasNextTile() {
-	return iter.hasNext();
+        return iter.hasNext();
     }
 
     @Override
     public Tile nextTile() {
-	generated++;
-	return iter.next();
+        generated++;
+        return iter.next();
     }
 
     @Override
     public int totalTileCount() {
-	return tiles.size();
+        return tiles.size();
     }
 
     @Override
     public int remainingTileCount() {
-	return tiles.size() - generated;
+        return tiles.size() - generated;
     }
 
     @Override
     public int generatedTileCount() {
-	return generated;
+        return generated;
     }
 }
