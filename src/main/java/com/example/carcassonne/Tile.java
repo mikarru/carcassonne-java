@@ -24,6 +24,7 @@ public class Tile {
                 int[] cities, int[] roads, int[] fields) {
         this.id = id;
         this.name = name;
+        this.borderTypes = borderTypes;
         this.citySegments = citySegments;
         this.roadSegments = roadSegments;
         this.fieldSegments = fieldSegments;
