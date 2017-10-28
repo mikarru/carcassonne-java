@@ -40,18 +40,13 @@ public abstract class Region {
         return segments;
     }
 
-    public void placeMeeple(Segment targetSegment, int meepleColor) {
-        for (Segment segment : segments) {
-            if (segment.isSame(targetSegment)) {
-                segment.placeMeeple(meepleColor);
-                onMeepleSegments.add(segment);
-                return;
-            }
-        }
-        throw new IllegalArgumentException("targetSegment is not contained on this Region");
+    public void notifyMeeplePlacement(Segment segment) {
+        assert segment.meepleIsPlaced();
+        assert segment.getRegion() == this;
+        onMeepleSegments.add(segment);
     }
     
-    public List<Segment> getOnMeepleSegment() {
+    public List<Segment> getOnMeepleSegments() {
         return onMeepleSegments;
     }
 
@@ -65,6 +60,7 @@ public abstract class Region {
                 yourSegment.setRegion(this);
                 segments.add(yourSegment);
             }
+            onMeepleSegments.addAll(region.getOnMeepleSegments());
             region.merged();
             return true;
         }

@@ -89,7 +89,7 @@ public class Segment {
 
     public void placeMeeple(int meepleColor) {
         this.placedMeepleColor = meepleColor;
-        region.placeMeeple(this, meepleColor);
+        region.notifyMeeplePlacement(this);
     }
 
     public int getPlacedMeeple() {
