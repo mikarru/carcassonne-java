@@ -25,10 +25,27 @@ public class RoadRegion extends Region {
                 if (s1.isAdjacentTo(s1D)) {
                     continue;
                 }
-                int adjacentX = (d/2==0) ? tile.getX() :
-                    (d==1) ? tile.getX() + 1 : tile.getX() - 1;
-                int adjacentY = (d/2==1) ? tile.getY() :
-                    (d==0) ? tile.getY() + 1 : tile.getY() - 1;
+                int adjacentX, adjacentY;
+                switch (d) {
+                case 0:
+                    adjacentX = tile.getX();
+                    adjacentY = tile.getY() + 1;
+                    break;
+                case 1:
+                    adjacentX = tile.getX() + 1;
+                    adjacentY = tile.getY();
+                    break;
+                case 2:
+                    adjacentX = tile.getX();
+                    adjacentY = tile.getY() - 1;
+                    break;
+                case 3:
+                    adjacentX = tile.getX() - 1;
+                    adjacentY = tile.getY();
+                    break;
+                default:
+                    throw new RuntimeException("Never reach here");
+                }
                 boolean foundAdjacentSegment = false;
                 for (Segment s2 : segments) {
                     if (s2.getTile().getX() == adjacentX && s2.getTile().getY() == adjacentY) {
