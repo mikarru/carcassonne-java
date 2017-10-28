@@ -9,7 +9,7 @@ public abstract class Region {
     protected Board board;
     protected int id;
     protected List<Segment> segments;
-    protected List<Segment> onMeepleSegments;
+    protected List<Segment> onMeepleSegments = new ArrayList<>();
     protected boolean merged = false;
     protected boolean scoreTransfer = false;
 
