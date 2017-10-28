@@ -55,7 +55,7 @@ public class PlacementValidator {
         Map<Player, Integer> playerMap = new HashMap<>();
         for (int i = 0; i < scoreSheet.getPlayers().length; i++) {
             playerMap.put(scoreSheet.getPlayers()[i], i);
-            context.registerMeeple(i);
+            context.registerPlayer(i);
         }
 
         int i = 0;

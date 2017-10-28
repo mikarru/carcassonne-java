@@ -20,7 +20,7 @@ public class GameContext {
         this.initialHoldingMeepleCount = initialHoldingMeepleCount;
     }
     
-    public GameContext registerMeeple(int meepleColor) {
+    public GameContext registerPlayer(int meepleColor) {
         if (map.containsKey(meepleColor)) {
             throw new IllegalArgumentException();
         }
@@ -74,7 +74,7 @@ public class GameContext {
         return map.get(meepleColor).onBoardMeepleCount;
     }
 
-    public Set<Integer> getRegisteredMeeples() {
+    public Set<Integer> getRegisteredPlayers() {
         return map.keySet();
     }
 }
