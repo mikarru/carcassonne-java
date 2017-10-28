@@ -7,7 +7,7 @@ import static com.example.carcassonne.BorderType.ROAD;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,20 +39,22 @@ public class Tiles {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final Map<String, TileParts> PARTS_MAP;
 
+    private static final String RESOURCE_NAME = "tile/tiles.json";
     static {
-        // TODO
-        String path = "hoge";
+        InputStream in = Tiles.class.getClassLoader().getResourceAsStream(RESOURCE_NAME);
+        if (in == null) {
+            throw new RuntimeException("Can't find tile definition file at " + RESOURCE_NAME);
+        }
         try {
-            PARTS_MAP = readTileDefinitions(path);
+            PARTS_MAP = readTileDefinitions(in);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    static Map<String, TileParts> readTileDefinitions(String path) throws IOException {
-        File file = new File(path);
+    static Map<String, TileParts> readTileDefinitions(InputStream in) throws IOException {
         Map<String, TileParts> map = new HashMap<>();
-        JsonNode rootNode = OBJECT_MAPPER.readTree(file);
+        JsonNode rootNode = OBJECT_MAPPER.readTree(in);
         Iterator<JsonNode> iter = rootNode.elements();
         while (iter.hasNext()) {
             JsonNode definition = iter.next();
