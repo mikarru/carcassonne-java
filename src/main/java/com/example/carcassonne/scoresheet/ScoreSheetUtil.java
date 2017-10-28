@@ -81,7 +81,7 @@ public class ScoreSheetUtil {
         }
         JsonNode meeplePlacementNode = placementNode.get("meeplePlacement");
         MeeplePlacement meeplePlacement = null;
-        if (meeplePlacement != null) {
+        if (meeplePlacementNode != null) {
             meeplePlacement = constractMeeplePlacement(meeplePlacementNode);
         }
         return new Placement(actionType, tileName, playerName, tilePlacement, meeplePlacement);

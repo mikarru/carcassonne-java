@@ -52,10 +52,10 @@ public class PlacementValidator {
         TileGenerator tileGenerator = createTileGenerator(placements);
         Board board = new Board(tileGenerator.totalTileCount());
         GameContext context = new GameContext(7);
-        Map<Player, Integer> playerMap = new HashMap<>();
+        Map<String, Integer> playerMap = new HashMap<>();
         for (int i = 0; i < scoreSheet.getPlayers().length; i++) {
-            playerMap.put(scoreSheet.getPlayers()[i], i);
-            context.registerMeeple(i);
+            playerMap.put(scoreSheet.getPlayers()[i].name, i);
+            context.registerPlayer(i);
         }
 
         int i = 0;
@@ -120,6 +120,7 @@ public class PlacementValidator {
             }
             i++;
         }
+        System.out.println(context);
         return new Result(true, "ok");
     }
 

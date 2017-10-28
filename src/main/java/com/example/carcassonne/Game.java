@@ -16,7 +16,7 @@ public class Game {
 
     public Game registerPlayer(Player player) {
         players.add(player);
-        context.registerMeeple(player.getColor());
+        context.registerPlayer(player.getColor());
         return this;
     }
         

@@ -11,6 +11,16 @@ public class GameContext {
         public int holdingMeepleCount;
         public int returnedMeepleCount;
         public int onBoardMeepleCount;
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder()
+                .append("score=").append(score).append(", ")
+                .append("holdingMeepleCount=").append(holdingMeepleCount).append(", ")
+                .append("returnedMeepleCount=").append(returnedMeepleCount).append(", ")
+                .append("onBoardMeepleCount=").append(onBoardMeepleCount);
+            return sb.toString();
+        }
     }
 
     private int initialHoldingMeepleCount;
@@ -20,7 +30,7 @@ public class GameContext {
         this.initialHoldingMeepleCount = initialHoldingMeepleCount;
     }
     
-    public GameContext registerMeeple(int meepleColor) {
+    public GameContext registerPlayer(int meepleColor) {
         if (map.containsKey(meepleColor)) {
             throw new IllegalArgumentException();
         }
@@ -74,7 +84,18 @@ public class GameContext {
         return map.get(meepleColor).onBoardMeepleCount;
     }
 
-    public Set<Integer> getRegisteredMeeples() {
+    public Set<Integer> getRegisteredPlayers() {
         return map.keySet();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("GameContext[");
+        for (Map.Entry<Integer, Container> e : map.entrySet()) {
+            int color = e.getKey();
+            Container c = e.getValue();
+            sb.append(color).append(": {").append(c).append("}, ");
+        }
+        return sb.toString();
     }
 }
