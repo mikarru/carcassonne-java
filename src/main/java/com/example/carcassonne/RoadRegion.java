@@ -22,7 +22,7 @@ public class RoadRegion extends Region {
             Tile tile = s1.getTile();
             for (int d = 0; d < 4; d++) {
                 int s1D = (d + 4 - tile.getRotation()) % 4;
-                if (s1.isAdjacentTo(s1D)) {
+                if (!s1.isAdjacentTo(s1D)) {
                     continue;
                 }
                 int adjacentX, adjacentY;
