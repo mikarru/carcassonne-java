@@ -127,14 +127,14 @@ public class Tile {
         return canAdjacentWith(0, topTile, r);
     }
 
-    // bottomTileをこのタイルの下に回転rした状態で置くことができるかどうか
-    public boolean canBottomAdjacentWith(Tile bottomTile, int r) {
-        return canAdjacentWith(1, bottomTile, r);
-    }
-
     // rightTileをこのタイルの右に回転rした状態で置くことができるかどうか
     public boolean canRightAdjacentWith(Tile rightTile, int r) {
-        return canAdjacentWith(2, rightTile, r);
+        return canAdjacentWith(1, rightTile, r);
+    }
+
+    // bottomTileをこのタイルの下に回転rした状態で置くことができるかどうか
+    public boolean canBottomAdjacentWith(Tile bottomTile, int r) {
+        return canAdjacentWith(2, bottomTile, r);
     }
 
     // leftTileをこのタイルの左に回転rした状態で置くことができるかどうか
@@ -142,9 +142,37 @@ public class Tile {
         return canAdjacentWith(3, leftTile, r);
     }
 
-    private boolean canAdjacentWith(int d, Tile leftTile, int r) {
+    private boolean canAdjacentWith(int d, Tile tile, int r) {
         BorderType myBorderType = getBorderType((d + 4 - rotation) % 4);
-        BorderType yourBorderType = leftTile.getBorderType((d + 2 + 4 - rotation) % 4);
+        BorderType yourBorderType = tile.getBorderType((d + 2 + 4 - r) % 4);
         return myBorderType == yourBorderType;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Tile[")
+            .append("id=").append(id).append(", ")
+            .append("name=").append(name).append(", ")
+            .append("x=").append(x).append(", ")
+            .append("y=").append(y).append(", ")
+            .append("rotation=").append(rotation)
+            .append("]");
+        return sb.toString();
+    }
+
+    public String toDetailedString() {
+        StringBuilder sb = new StringBuilder("Tile[")
+            .append("id=").append(id).append(", ")
+            .append("name=").append(name).append(", ")
+            .append("x=").append(x).append(", ")
+            .append("y=").append(y).append(", ")
+            .append("rotation=").append(rotation).append(", ")
+            .append("borderTypes=")
+            .append(borderTypes[0]).append(":")
+            .append(borderTypes[1]).append(":")
+            .append(borderTypes[2]).append(":")
+            .append(borderTypes[3])
+            .append("]");
+        return sb.toString();
     }
 }
