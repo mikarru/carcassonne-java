@@ -30,14 +30,16 @@ public class FieldRegion extends Region {
     }
 
     private boolean isAdjacentWith(CityRegion cityRegion) {
-        List<Segment> mySegments = getSegments();
-        List<Segment> yourSegments = cityRegion.getSegments();
-        for (Segment mySegment : mySegments) {
-            Tile myTile = mySegment.getTile();
-            for (Segment yourSegment : yourSegments) {
-                Tile yourTile = yourSegment.getTile();
+        List<Segment> fieldSegments = getSegments();
+        List<Segment> citySegments = cityRegion.getSegments();
+        for (Segment fieldSegment : fieldSegments) {
+            Tile myTile = fieldSegment.getTile();
+            for (Segment citySegment : citySegments) {
+                Tile yourTile = citySegment.getTile();
                 if (myTile.getX() == yourTile.getX() && myTile.getY() == yourTile.getY()) {
-                    return true;
+                    if (myTile.isTwoSegmentAdjacent(fieldSegment.getIndex(), citySegment.getIndex())) {
+                        return true;
+                    }
                 }
             }
         }
