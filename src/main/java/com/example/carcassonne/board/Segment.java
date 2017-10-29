@@ -116,4 +116,17 @@ public class Segment {
             getIndex() == that.getIndex() &&
             getSegmentType() == that.getSegmentType();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder()
+            .append("Segment[")
+            .append("type=").append(type).append(", ")
+            .append("index=").append(index).append(", ")
+            .append("pennant=").append(pennant).append(", ")
+            .append("meeple=").append(placedMeepleColor).append(", ")
+            .append("tile=").append(tile)
+            .append("]");
+        return sb.toString();
+    }
 }
