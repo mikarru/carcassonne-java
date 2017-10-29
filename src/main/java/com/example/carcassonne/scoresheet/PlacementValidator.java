@@ -6,6 +6,7 @@ import com.example.carcassonne.TileGenerator;
 import com.example.carcassonne.Tiles;
 import com.example.carcassonne.board.Board;
 import com.example.carcassonne.board.Segment;
+import com.example.carcassonne.board.Segment.SegmentType;
 import com.example.carcassonne.board.Tile;
 import static com.example.carcassonne.scoresheet.ScoreSheet.ActionType;
 import static com.example.carcassonne.scoresheet.ScoreSheet.MeeplePlacement;
@@ -126,6 +127,16 @@ public class PlacementValidator {
                     LOG.info("{} placed meeple to {} with index={}",
                             placement.playerName, meepleP.segmentType, meepleP.segmentIndex);
                 }
+                for (Map.Entry<String, Integer> e : playerMap.entrySet()) {
+                    String playerName = e.getKey();
+                    int color = e.getValue();
+                    for (SegmentType type : SegmentType.values()) {
+                        int addedScore = context.getAddedScore(color, type);
+                        if (addedScore != 0) {
+                            LOG.info("{} gained {} point from {}", playerName, addedScore, type);
+                        }
+                    }
+                }
                 context.endTurn();
                 break;
             default:
@@ -133,8 +144,25 @@ public class PlacementValidator {
             }
             i++;
         }
+        LOG.info("All tiles have drawn");
         board.transferRemainingScore(context);
-        System.out.println(context);
+        for (Map.Entry<String, Integer> e : playerMap.entrySet()) {
+            String playerName = e.getKey();
+            int color = e.getValue();
+            for (SegmentType type : SegmentType.values()) {
+                int addedScore = context.getAddedScore(color, type);
+                if (addedScore != 0) {
+                    LOG.info("{} gained {} point from {}", playerName, addedScore, type);
+                }
+            }
+        }
+        context.endGame();
+        for (Map.Entry<String, Integer> e : playerMap.entrySet()) {
+            String playerName = e.getKey();
+            int color = e.getValue();
+            int score = context.getTotalScore(color);
+            LOG.info("Last score of {}: {}", playerName, score);
+        }
         return new Result(true, "ok");
     }
 
@@ -157,6 +185,12 @@ public class PlacementValidator {
         ScoreSheet s = ScoreSheetUtil.readFromFile(path);
         System.out.println(s);
         Result r = new PlacementValidator().validate(s);
-        System.out.println(r);
+        if (r.isValid()) {
+            System.out.println("ScoreSheet is valid");
+            System.exit(0);
+        } else {
+            System.out.println("ScoreSheet is invalid: " + r.getMessage());
+            System.exit(1);
+        }
     }
 }
