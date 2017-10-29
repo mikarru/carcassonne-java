@@ -98,19 +98,19 @@ public class Tile {
         return (index != -1) ? fieldSegments[index] : null;
     }
 
-    public Segment[] getCitySegments() {
+    Segment[] getCitySegments() {
         return citySegments;
     }
 
-    public Segment[] getRoadSegments() {
+    Segment[] getRoadSegments() {
         return roadSegments;
     }
 
-    public Segment[] getFieldSegments() {
+    Segment[] getFieldSegments() {
         return fieldSegments;
     }
 
-    public Segment getCloisterSegment() {
+    Segment getCloisterSegment() {
         return cloisterSegment;
     }
 

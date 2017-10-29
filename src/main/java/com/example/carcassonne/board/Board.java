@@ -21,23 +21,23 @@ public class Board {
         positionManager = new TilePositionManager(tileN);
     }
 
-    public TilePositionManager getTilePositionManager() {
+    TilePositionManager getTilePositionManager() {
         return positionManager;
     }
 
-    public List<CityRegion> getCityRegions() {
+    List<CityRegion> getCityRegions() {
         return cityRegions;
     }
 
-    public List<RoadRegion> getRoadRegions() {
+    List<RoadRegion> getRoadRegions() {
         return roadRegions;
     }
 
-    public List<FieldRegion> getFieldRegions() {
+    List<FieldRegion> getFieldRegions() {
         return fieldRegions;
     }
 
-    public List<CloisterRegion> getCloisterRegions() {
+    List<CloisterRegion> getCloisterRegions() {
         return cloisterRegions;
     }
 

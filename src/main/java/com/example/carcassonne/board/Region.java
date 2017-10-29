@@ -39,7 +39,7 @@ public abstract class Region {
         segment.setRegion(this);
     }
 
-    public List<Segment> getSegments() {
+    List<Segment> getSegments() {
         return segments;
     }
 
@@ -49,7 +49,7 @@ public abstract class Region {
         onMeepleSegments.add(segment);
     }
     
-    public List<Segment> getOnMeepleSegments() {
+    List<Segment> getOnMeepleSegments() {
         return onMeepleSegments;
     }
 
