@@ -98,4 +98,37 @@ public class GameContext {
         }
         return sb.toString();
     }
+
+    // for debugging
+    public void checkMeepleCounts() {
+        for (Map.Entry<Integer, Container> e : map.entrySet()) {
+            int color = e.getKey();
+            Container c = e.getValue();
+            int totalMeepleCount = c.holdingMeepleCount + c.returnedMeepleCount + c.onBoardMeepleCount;
+            if (totalMeepleCount > initialHoldingMeepleCount) {
+                String message = "Meeple(color=" + color + ") increased from " +
+                    initialHoldingMeepleCount + " to " + totalMeepleCount;
+                throw new AssertionError(message + "\n" + c);
+            } else if (totalMeepleCount < initialHoldingMeepleCount) {
+                String message = "Meeple(color=" + color + ") decreased from " +
+                    initialHoldingMeepleCount + " to " + totalMeepleCount;
+                throw new AssertionError(message + "\n" + c);
+            }
+            if (c.holdingMeepleCount < 0) {
+                String message = "holdingMeepleCount of meeple(color=" + color + ") " +
+                    "is less than 0(" + c.holdingMeepleCount + ")";
+                throw new AssertionError(message + "\n" + c);
+            }
+            if (c.returnedMeepleCount < 0) {
+                String message = "returnedMeepleCount of meeple(color=" + color + ") " +
+                    "is less than 0(" + c.returnedMeepleCount + ")";
+                throw new AssertionError(message + "\n" + c);
+            }
+            if (c.onBoardMeepleCount < 0) {
+                String message = "onBoardMeepleCount of meeple(color=" + color + ") " +
+                    "is less than 0(" + c.onBoardMeepleCount + ")";
+                throw new AssertionError(message + "\n" + c);
+            }
+        }
+    }
 }
