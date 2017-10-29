@@ -255,4 +255,30 @@ public class Board {
             }
         }
     }
+
+    // for debugging
+    public List<Segment> getOnMeepleSegments() {
+        List<Segment> segments = new ArrayList<>();
+        for (Region region : cityRegions) {
+            if (!region.isMerged() && !region.scoreIsTransfered()) {
+                segments.addAll(region.getOnMeepleSegments());
+            }
+        }
+        for (Region region : roadRegions) {
+            if (!region.isMerged() && !region.scoreIsTransfered()) {
+                segments.addAll(region.getOnMeepleSegments());
+            }
+        }
+        for (Region region : fieldRegions) {
+            if (!region.isMerged() && !region.scoreIsTransfered()) {
+                segments.addAll(region.getOnMeepleSegments());
+            }
+        }
+        for (Region region : cloisterRegions) {
+            if (!region.isMerged() && !region.scoreIsTransfered()) {
+                segments.addAll(region.getOnMeepleSegments());
+            }
+        }
+        return segments;
+    }
 }
