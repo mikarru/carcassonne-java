@@ -135,7 +135,7 @@ public class Board {
                 }
                 if (!region.meepleIsPlaced()) {
                     meeplePlaceCandidates.add(citySegment);
-                } else if (region.isCompleted()) {
+                } else if (region.isCompleted() && !region.scoreIsTransfered()) {
                     region.transferScore(context, true);
                 }
             }
@@ -168,7 +168,7 @@ public class Board {
                 }
                 if (!region.meepleIsPlaced()) {
                     meeplePlaceCandidates.add(roadSegment);
-                } else if (region.isCompleted()) {
+                } else if (region.isCompleted() && !region.scoreIsTransfered()) {
                     region.transferScore(context, true);
                 }
             }
@@ -227,6 +227,7 @@ public class Board {
             throw new IllegalArgumentException("Meeple is already placed");
         }
         segment.placeMeeple(meepleColor);
+        context.placeMeeple(meepleColor);
         if (region.isCompleted()) {
             region.transferScore(context, true);
         }
