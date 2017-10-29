@@ -47,7 +47,7 @@ public class ScoreSheet {
 	
 	public MeeplePlacement(SegmentType type, int index) {
 	    this.segmentType = type;
-	    this.segmentIndex = segmentIndex;
+	    this.segmentIndex = index;
 	}
 
         @Override
