@@ -133,6 +133,7 @@ public class PlacementValidator {
             }
             i++;
         }
+        board.transferRemainingScore(context);
         System.out.println(context);
         return new Result(true, "ok");
     }
