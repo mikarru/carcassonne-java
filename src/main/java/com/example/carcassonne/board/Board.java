@@ -184,7 +184,7 @@ public class Board {
                 Tile aroundTile = aroundTiles[d / 2];
                 int myD = (d + 8 - rotation * 2) % 8;
                 if (fieldSegment.isAdjacentTo(myD)) {
-                    int yourD = (d + 5 + 8 - aroundTile.getRotation() * 2) % 8;
+                    int yourD = (d + (d%2==0 ? 5 : 3) + 8 - aroundTile.getRotation() * 2) % 8;
                     Segment yourSegment = aroundTile.getFieldSegmentOfDirection(yourD);
                     adjacentRegions.add(yourSegment.getRegion());
                 }
