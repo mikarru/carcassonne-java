@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.example.carcassonne.Consts;
 import com.example.carcassonne.GameContext;
+import com.example.carcassonne.board.Segment.SegmentType;
 
 
 public abstract class Region {
@@ -81,7 +82,7 @@ public abstract class Region {
     public void transferScore(GameContext context, boolean returnMeeple) {
         int score = calculateScore();
         for (Integer meepleColor : getWinningMeeples()) {
-            context.addScore(meepleColor, score);
+            context.addScore(meepleColor, getRegionType(), score);
         }
         if (returnMeeple) {
             returnMeeples(context);
@@ -126,4 +127,5 @@ public abstract class Region {
     
     public abstract boolean isCompleted();
     public abstract int calculateScore();
+    public abstract SegmentType getRegionType();
 }

@@ -1,5 +1,8 @@
 package com.example.carcassonne;
 
+import com.example.carcassonne.board.Segment.SegmentType;
+
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -7,15 +10,23 @@ import java.util.Set;
 
 public class GameContext {
     private static class Container {
-        public int score;
+        public int totalScore;
+        public EnumMap<SegmentType, Integer> addedScores;
         public int holdingMeepleCount;
         public int returnedMeepleCount;
         public int onBoardMeepleCount;
 
+        public Container() {
+            addedScores = new EnumMap<>(SegmentType.class);
+            for (SegmentType type : SegmentType.values()) {
+                addedScores.put(type, 0);
+            }
+        }
+
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder()
-                .append("score=").append(score).append(", ")
+                .append("totalScore=").append(totalScore).append(", ")
                 .append("holdingMeepleCount=").append(holdingMeepleCount).append(", ")
                 .append("returnedMeepleCount=").append(returnedMeepleCount).append(", ")
                 .append("onBoardMeepleCount=").append(onBoardMeepleCount);
@@ -44,7 +55,17 @@ public class GameContext {
         for (Container c : map.values()) {
             c.holdingMeepleCount += c.returnedMeepleCount;
             c.returnedMeepleCount = 0;
+
+            for (SegmentType type : c.addedScores.keySet()) {
+                int added = c.addedScores.get(type);
+                c.totalScore += added;
+                c.addedScores.put(type, 0);
+            }
         }
+    }
+
+    public void endGame() {
+        endTurn();
     }
 
     public void returnMeeple(int meepleColor, int n) {
@@ -63,13 +84,18 @@ public class GameContext {
         c.onBoardMeepleCount += 1;
     }
 
-    public void addScore(int meepleColor, int score) {
+    public void addScore(int meepleColor, SegmentType type, int score) {
         Container c = map.get(meepleColor);
-        c.score += score;
+        int before = c.addedScores.get(type);
+        c.addedScores.put(type, before + score);
     }
 
-    public int getScore(int meepleColor) {
-        return map.get(meepleColor).score;
+    public int getTotalScore(int meepleColor) {
+        return map.get(meepleColor).totalScore;
+    }
+
+    public int getAddedScore(int meepleColor, SegmentType type) {
+        return map.get(meepleColor).addedScores.get(type);
     }
 
     public int getHoldingMeepleCount(int meepleColor) {

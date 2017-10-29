@@ -1,5 +1,7 @@
 package com.example.carcassonne.board;
 
+import com.example.carcassonne.board.Segment.SegmentType;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,5 +73,10 @@ public class RoadRegion extends Region {
         }
         int score = uniqueTiles.size();
         return score;
+    }
+
+    @Override
+    public SegmentType getRegionType() {
+        return SegmentType.ROAD;
     }
 }
