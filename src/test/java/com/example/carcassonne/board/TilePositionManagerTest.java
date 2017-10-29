@@ -1,4 +1,4 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
 
 import java.util.Set;
 

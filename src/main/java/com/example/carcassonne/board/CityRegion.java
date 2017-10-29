@@ -1,14 +1,16 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
+
+import com.example.carcassonne.board.Segment.SegmentType;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 
-public class RoadRegion extends Region {
+public class CityRegion extends Region {
     private boolean completed = false;
 
-    public RoadRegion(int id, Board board) {
+    public CityRegion(int id, Board board) {
         super(id, board);
     }
 
@@ -65,11 +67,20 @@ public class RoadRegion extends Region {
     @Override
     public int calculateScore() {
         List<Segment> segments = getSegments();
+        int pennantCount = 0;
         Set<Integer> uniqueTiles = new HashSet<>(segments.size());
         for (Segment s : segments) {
+            if (s.hasPennant()) {
+                pennantCount++;
+            }
             uniqueTiles.add(s.getTile().getId());
         }
-        int score = uniqueTiles.size();
-        return score;
+        int score = pennantCount + uniqueTiles.size();
+        return isCompleted() ? score * 2 : score;
+    }
+
+    @Override
+    public SegmentType getRegionType() {
+        return SegmentType.CITY;
     }
 }

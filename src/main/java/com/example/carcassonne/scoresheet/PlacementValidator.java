@@ -1,26 +1,32 @@
 package com.example.carcassonne.scoresheet;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.example.carcassonne.Board;
 import com.example.carcassonne.GameContext;
-import com.example.carcassonne.IdGenerator;
-import com.example.carcassonne.Segment;
 import com.example.carcassonne.SequentialTileGenerator;
-import com.example.carcassonne.Tile;
 import com.example.carcassonne.TileGenerator;
 import com.example.carcassonne.Tiles;
+import com.example.carcassonne.board.Board;
+import com.example.carcassonne.board.Segment;
+import com.example.carcassonne.board.Segment.SegmentType;
+import com.example.carcassonne.board.Tile;
 import static com.example.carcassonne.scoresheet.ScoreSheet.ActionType;
 import static com.example.carcassonne.scoresheet.ScoreSheet.MeeplePlacement;
 import static com.example.carcassonne.scoresheet.ScoreSheet.Placement;
 import static com.example.carcassonne.scoresheet.ScoreSheet.Player;
 import static com.example.carcassonne.scoresheet.ScoreSheet.TilePlacement;
+import com.example.carcassonne.util.IdGenerator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class PlacementValidator {
+    private static final Logger LOG = LoggerFactory.getLogger(PlacementValidator.class);
+
     public static class Result {
         boolean isValid;
         String message;
@@ -62,15 +68,18 @@ public class PlacementValidator {
         if (tileGenerator.hasNextTile()) {
             Tile firstTile = tileGenerator.nextTile();
             Placement placement = placements[i++];
+            LOG.info("Started turn 0 with tile={}", firstTile.getName());
             if (placement.action != ActionType.FIRST_PLACE) {
                 return new Result(false, "firstPlace action is missing");
             }
             int rotation = (placement.tilePlacement != null) ? placement.tilePlacement.rotation : 0;
             board.setFirstTile(firstTile, rotation, context);
+            LOG.info("Placed first tile with x=0, y=0, rotation={}", rotation);
         }
         while (tileGenerator.hasNextTile()) {
             Tile tile = tileGenerator.nextTile();
             Placement placement = placements[i];
+            LOG.info("Started turn {} with tile={}", i, tile.getName());
             switch (placement.action) {
             case FIRST_PLACE:
                 return new Result(false, "firstPlace action occures twice");
@@ -79,6 +88,7 @@ public class PlacementValidator {
                     String message = "" + i + "th tile is skipped neverthless it can be placed";
                     return new Result(false, message);
                 }
+                LOG.info("Skipped tile");
                 break;
             case PLAYER_PLACE:
                 TilePlacement tileP = placement.tilePlacement;
@@ -89,6 +99,8 @@ public class PlacementValidator {
                     return new Result(false, message);
                 }
                 List<Segment> segments = board.placeTile(tileP.x, tileP.y, tileP.rotation, tile, context);
+                LOG.info("{} placed tile with x={}, y={}, rotation={}",
+                        placement.playerName, tileP.x, tileP.y, tileP.rotation);
                 MeeplePlacement meepleP = placement.meeplePlacement;
                 if (meepleP != null) {
                     int meepleColor = playerMap.get(placement.playerName);
@@ -112,6 +124,18 @@ public class PlacementValidator {
                         return new Result(false, message);
                     }
                     board.placeMeeple(targetSegment, meepleColor, context);
+                    LOG.info("{} placed meeple to {} with index={}",
+                            placement.playerName, meepleP.segmentType, meepleP.segmentIndex);
+                }
+                for (Map.Entry<String, Integer> e : playerMap.entrySet()) {
+                    String playerName = e.getKey();
+                    int color = e.getValue();
+                    for (SegmentType type : SegmentType.values()) {
+                        int addedScore = context.getAddedScore(color, type);
+                        if (addedScore != 0) {
+                            LOG.info("{} gained {} point from {}", playerName, addedScore, type);
+                        }
+                    }
                 }
                 context.endTurn();
                 break;
@@ -120,7 +144,25 @@ public class PlacementValidator {
             }
             i++;
         }
-        System.out.println(context);
+        LOG.info("All tiles have drawn");
+        board.transferRemainingScore(context);
+        for (Map.Entry<String, Integer> e : playerMap.entrySet()) {
+            String playerName = e.getKey();
+            int color = e.getValue();
+            for (SegmentType type : SegmentType.values()) {
+                int addedScore = context.getAddedScore(color, type);
+                if (addedScore != 0) {
+                    LOG.info("{} gained {} point from {}", playerName, addedScore, type);
+                }
+            }
+        }
+        context.endGame();
+        for (Map.Entry<String, Integer> e : playerMap.entrySet()) {
+            String playerName = e.getKey();
+            int color = e.getValue();
+            int score = context.getTotalScore(color);
+            LOG.info("Last score of {}: {}", playerName, score);
+        }
         return new Result(true, "ok");
     }
 
@@ -143,6 +185,12 @@ public class PlacementValidator {
         ScoreSheet s = ScoreSheetUtil.readFromFile(path);
         System.out.println(s);
         Result r = new PlacementValidator().validate(s);
-        System.out.println(r);
+        if (r.isValid()) {
+            System.out.println("ScoreSheet is valid");
+            System.exit(0);
+        } else {
+            System.out.println("ScoreSheet is invalid: " + r.getMessage());
+            System.exit(1);
+        }
     }
 }

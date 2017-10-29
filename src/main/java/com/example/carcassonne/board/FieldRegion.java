@@ -1,4 +1,6 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
+
+import com.example.carcassonne.board.Segment.SegmentType;
 
 import java.util.List;
 
@@ -40,5 +42,10 @@ public class FieldRegion extends Region {
             }
         }
         return false;
+    }
+
+    @Override
+    public SegmentType getRegionType() {
+        return SegmentType.FIELD;
     }
 }

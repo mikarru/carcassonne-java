@@ -1,4 +1,6 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
+
+import com.example.carcassonne.Tiles;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

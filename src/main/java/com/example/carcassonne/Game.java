@@ -1,5 +1,9 @@
 package com.example.carcassonne;
 
+import com.example.carcassonne.board.Board;
+import com.example.carcassonne.board.Segment;
+import com.example.carcassonne.board.Tile;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,8 +56,9 @@ public class Game {
 
         // end game
         board.transferRemainingScore(context);
+        context.endGame();
         for (Player player : players) {
-            int score = context.getScore(player.getColor());
+            int score = context.getTotalScore(player.getColor());
             player.setScore(score);
         }
         List<Player> sortedPlayers = new ArrayList<>(players);

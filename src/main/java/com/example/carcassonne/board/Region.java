@@ -1,8 +1,12 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.example.carcassonne.Consts;
+import com.example.carcassonne.GameContext;
+import com.example.carcassonne.board.Segment.SegmentType;
 
 
 public abstract class Region {
@@ -36,7 +40,7 @@ public abstract class Region {
         segment.setRegion(this);
     }
 
-    public List<Segment> getSegments() {
+    List<Segment> getSegments() {
         return segments;
     }
 
@@ -46,7 +50,7 @@ public abstract class Region {
         onMeepleSegments.add(segment);
     }
     
-    public List<Segment> getOnMeepleSegments() {
+    List<Segment> getOnMeepleSegments() {
         return onMeepleSegments;
     }
 
@@ -78,7 +82,7 @@ public abstract class Region {
     public void transferScore(GameContext context, boolean returnMeeple) {
         int score = calculateScore();
         for (Integer meepleColor : getWinningMeeples()) {
-            context.addScore(meepleColor, score);
+            context.addScore(meepleColor, getRegionType(), score);
         }
         if (returnMeeple) {
             returnMeeples(context);
@@ -123,4 +127,5 @@ public abstract class Region {
     
     public abstract boolean isCompleted();
     public abstract int calculateScore();
+    public abstract SegmentType getRegionType();
 }

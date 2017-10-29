@@ -1,4 +1,4 @@
-package com.example.carcassonne;
+package com.example.carcassonne.util;
 
 public class IdGenerator {
     private int id = 0;

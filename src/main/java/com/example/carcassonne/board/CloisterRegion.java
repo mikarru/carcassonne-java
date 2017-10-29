@@ -1,4 +1,6 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
+
+import com.example.carcassonne.board.Segment.SegmentType;
 
 
 public class CloisterRegion extends Region {
@@ -40,5 +42,10 @@ public class CloisterRegion extends Region {
             completed = true;
         }
         return score;
+    }
+
+    @Override
+    public SegmentType getRegionType() {
+        return SegmentType.CLOISTER;
     }
 }

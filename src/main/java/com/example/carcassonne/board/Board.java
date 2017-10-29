@@ -1,4 +1,7 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
+
+import com.example.carcassonne.GameContext;
+import com.example.carcassonne.util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,23 +21,23 @@ public class Board {
         positionManager = new TilePositionManager(tileN);
     }
 
-    public TilePositionManager getTilePositionManager() {
+    TilePositionManager getTilePositionManager() {
         return positionManager;
     }
 
-    public List<CityRegion> getCityRegions() {
+    List<CityRegion> getCityRegions() {
         return cityRegions;
     }
 
-    public List<RoadRegion> getRoadRegions() {
+    List<RoadRegion> getRoadRegions() {
         return roadRegions;
     }
 
-    public List<FieldRegion> getFieldRegions() {
+    List<FieldRegion> getFieldRegions() {
         return fieldRegions;
     }
 
-    public List<CloisterRegion> getCloisterRegions() {
+    List<CloisterRegion> getCloisterRegions() {
         return cloisterRegions;
     }
 
@@ -132,7 +135,7 @@ public class Board {
                 }
                 if (!region.meepleIsPlaced()) {
                     meeplePlaceCandidates.add(citySegment);
-                } else if (region.isCompleted()) {
+                } else if (region.isCompleted() && !region.scoreIsTransfered()) {
                     region.transferScore(context, true);
                 }
             }
@@ -165,7 +168,7 @@ public class Board {
                 }
                 if (!region.meepleIsPlaced()) {
                     meeplePlaceCandidates.add(roadSegment);
-                } else if (region.isCompleted()) {
+                } else if (region.isCompleted() && !region.scoreIsTransfered()) {
                     region.transferScore(context, true);
                 }
             }
@@ -181,7 +184,7 @@ public class Board {
                 Tile aroundTile = aroundTiles[d / 2];
                 int myD = (d + 8 - rotation * 2) % 8;
                 if (fieldSegment.isAdjacentTo(myD)) {
-                    int yourD = (d + 5 + 8 - aroundTile.getRotation() * 2) % 8;
+                    int yourD = (d + (d%2==0 ? 5 : 3) + 8 - aroundTile.getRotation() * 2) % 8;
                     Segment yourSegment = aroundTile.getFieldSegmentOfDirection(yourD);
                     adjacentRegions.add(yourSegment.getRegion());
                 }
@@ -224,6 +227,7 @@ public class Board {
             throw new IllegalArgumentException("Meeple is already placed");
         }
         segment.placeMeeple(meepleColor);
+        context.placeMeeple(meepleColor);
         if (region.isCompleted()) {
             region.transferScore(context, true);
         }
@@ -250,5 +254,31 @@ public class Board {
                 region.transferScore(context, true);
             }
         }
+    }
+
+    // for debugging
+    public List<Segment> getOnMeepleSegments() {
+        List<Segment> segments = new ArrayList<>();
+        for (Region region : cityRegions) {
+            if (!region.isMerged() && !region.scoreIsTransfered()) {
+                segments.addAll(region.getOnMeepleSegments());
+            }
+        }
+        for (Region region : roadRegions) {
+            if (!region.isMerged() && !region.scoreIsTransfered()) {
+                segments.addAll(region.getOnMeepleSegments());
+            }
+        }
+        for (Region region : fieldRegions) {
+            if (!region.isMerged() && !region.scoreIsTransfered()) {
+                segments.addAll(region.getOnMeepleSegments());
+            }
+        }
+        for (Region region : cloisterRegions) {
+            if (!region.isMerged() && !region.scoreIsTransfered()) {
+                segments.addAll(region.getOnMeepleSegments());
+            }
+        }
+        return segments;
     }
 }

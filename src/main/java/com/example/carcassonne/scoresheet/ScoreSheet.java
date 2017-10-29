@@ -1,6 +1,6 @@
 package com.example.carcassonne.scoresheet;
 
-import static com.example.carcassonne.Segment.SegmentType;
+import static com.example.carcassonne.board.Segment.SegmentType;
 
 
 public class ScoreSheet {
@@ -47,7 +47,7 @@ public class ScoreSheet {
 	
 	public MeeplePlacement(SegmentType type, int index) {
 	    this.segmentType = type;
-	    this.segmentIndex = segmentIndex;
+	    this.segmentIndex = index;
 	}
 
         @Override
