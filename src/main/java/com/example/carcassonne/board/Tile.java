@@ -148,6 +148,31 @@ public class Tile {
         return myBorderType == yourBorderType;
     }
 
+    public boolean isTwoSegmentAdjacent(int fieldSegmentIndex, int citySegmentIndex) {
+        assert fieldSegmentIndex >= 0 && fieldSegmentIndex < fieldSegments.length;
+        assert citySegmentIndex >= 0 && citySegmentIndex < citySegments.length;
+        for (int fieldD = 0; fieldD < 8; fieldD++) {
+            if (fields[fieldD] != fieldSegmentIndex) {
+                continue;
+            }
+            for (int cityD = 0; cityD < 4; cityD++) {
+                if (cities[cityD] != citySegmentIndex) {
+                    continue;
+                }
+                if (isNeighborhoodDirections(fieldD, cityD)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isNeighborhoodDirections(int fieldD, int cityD) {
+        int cityD1 = cityD * 2;
+        int cityD2 = cityD1 + 1;
+        return ((cityD2 + 1) % 8 == fieldD) || ((cityD1 - 1 + 8) % 8 == fieldD);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Tile[")
