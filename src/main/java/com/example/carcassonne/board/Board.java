@@ -1,4 +1,7 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
+
+import com.example.carcassonne.GameContext;
+import com.example.carcassonne.util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

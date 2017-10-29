@@ -1,8 +1,11 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.example.carcassonne.Consts;
+import com.example.carcassonne.GameContext;
 
 
 public abstract class Region {

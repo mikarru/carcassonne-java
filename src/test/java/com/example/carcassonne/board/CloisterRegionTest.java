@@ -1,4 +1,4 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

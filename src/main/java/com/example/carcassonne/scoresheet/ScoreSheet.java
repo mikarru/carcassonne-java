@@ -1,6 +1,6 @@
 package com.example.carcassonne.scoresheet;
 
-import static com.example.carcassonne.Segment.SegmentType;
+import static com.example.carcassonne.board.Segment.SegmentType;
 
 
 public class ScoreSheet {

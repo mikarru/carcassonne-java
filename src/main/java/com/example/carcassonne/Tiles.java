@@ -1,8 +1,11 @@
 package com.example.carcassonne;
 
-import static com.example.carcassonne.BorderType.CITY;
-import static com.example.carcassonne.BorderType.FIELD;
-import static com.example.carcassonne.BorderType.ROAD;
+import com.example.carcassonne.board.BorderType;
+import static com.example.carcassonne.board.BorderType.CITY;
+import static com.example.carcassonne.board.BorderType.FIELD;
+import static com.example.carcassonne.board.BorderType.ROAD;
+import com.example.carcassonne.board.Segment;
+import com.example.carcassonne.board.Tile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

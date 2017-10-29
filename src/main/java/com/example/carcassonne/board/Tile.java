@@ -1,4 +1,4 @@
-package com.example.carcassonne;
+package com.example.carcassonne.board;
 
 
 public class Tile {

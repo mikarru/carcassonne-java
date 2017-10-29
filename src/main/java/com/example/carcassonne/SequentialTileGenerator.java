@@ -1,5 +1,7 @@
 package com.example.carcassonne;
 
+import com.example.carcassonne.board.Tile;
+
 import java.util.Iterator;
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.example.carcassonne.scoresheet;
 
-import static com.example.carcassonne.Segment.SegmentType;
+import static com.example.carcassonne.board.Segment.SegmentType;
 import static com.example.carcassonne.scoresheet.ScoreSheet.ActionType;
 import static com.example.carcassonne.scoresheet.ScoreSheet.MeeplePlacement;
 import static com.example.carcassonne.scoresheet.ScoreSheet.Placement;

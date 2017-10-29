@@ -1,23 +1,23 @@
 package com.example.carcassonne.scoresheet;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.example.carcassonne.Board;
 import com.example.carcassonne.GameContext;
-import com.example.carcassonne.IdGenerator;
-import com.example.carcassonne.Segment;
 import com.example.carcassonne.SequentialTileGenerator;
-import com.example.carcassonne.Tile;
 import com.example.carcassonne.TileGenerator;
 import com.example.carcassonne.Tiles;
+import com.example.carcassonne.board.Board;
+import com.example.carcassonne.board.Segment;
+import com.example.carcassonne.board.Tile;
 import static com.example.carcassonne.scoresheet.ScoreSheet.ActionType;
 import static com.example.carcassonne.scoresheet.ScoreSheet.MeeplePlacement;
 import static com.example.carcassonne.scoresheet.ScoreSheet.Placement;
 import static com.example.carcassonne.scoresheet.ScoreSheet.Player;
 import static com.example.carcassonne.scoresheet.ScoreSheet.TilePlacement;
+import com.example.carcassonne.util.IdGenerator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class PlacementValidator {

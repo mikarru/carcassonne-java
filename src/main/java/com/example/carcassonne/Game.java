@@ -1,5 +1,9 @@
 package com.example.carcassonne;
 
+import com.example.carcassonne.board.Board;
+import com.example.carcassonne.board.Segment;
+import com.example.carcassonne.board.Tile;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
