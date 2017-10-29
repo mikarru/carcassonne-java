@@ -19,8 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class PlacementValidator {
+    private static final Logger LOG = LoggerFactory.getLogger(PlacementValidator.class);
+
     public static class Result {
         boolean isValid;
         String message;
@@ -62,15 +67,18 @@ public class PlacementValidator {
         if (tileGenerator.hasNextTile()) {
             Tile firstTile = tileGenerator.nextTile();
             Placement placement = placements[i++];
+            LOG.info("Started turn 0 with tile={}", firstTile.getName());
             if (placement.action != ActionType.FIRST_PLACE) {
                 return new Result(false, "firstPlace action is missing");
             }
             int rotation = (placement.tilePlacement != null) ? placement.tilePlacement.rotation : 0;
             board.setFirstTile(firstTile, rotation, context);
+            LOG.info("Placed first tile with x=0, y=0, rotation={}", rotation);
         }
         while (tileGenerator.hasNextTile()) {
             Tile tile = tileGenerator.nextTile();
             Placement placement = placements[i];
+            LOG.info("Started turn {} with tile={}", i, tile.getName());
             switch (placement.action) {
             case FIRST_PLACE:
                 return new Result(false, "firstPlace action occures twice");
@@ -79,6 +87,7 @@ public class PlacementValidator {
                     String message = "" + i + "th tile is skipped neverthless it can be placed";
                     return new Result(false, message);
                 }
+                LOG.info("Skipped tile");
                 break;
             case PLAYER_PLACE:
                 TilePlacement tileP = placement.tilePlacement;
@@ -89,6 +98,8 @@ public class PlacementValidator {
                     return new Result(false, message);
                 }
                 List<Segment> segments = board.placeTile(tileP.x, tileP.y, tileP.rotation, tile, context);
+                LOG.info("{} placed tile with x={}, y={}, rotation={}",
+                        placement.playerName, tileP.x, tileP.y, tileP.rotation);
                 MeeplePlacement meepleP = placement.meeplePlacement;
                 if (meepleP != null) {
                     int meepleColor = playerMap.get(placement.playerName);
@@ -112,6 +123,8 @@ public class PlacementValidator {
                         return new Result(false, message);
                     }
                     board.placeMeeple(targetSegment, meepleColor, context);
+                    LOG.info("{} placed meeple to {} with index={}",
+                            placement.playerName, meepleP.segmentType, meepleP.segmentIndex);
                 }
                 context.endTurn();
                 break;
