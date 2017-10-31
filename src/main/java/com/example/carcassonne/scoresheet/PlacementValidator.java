@@ -144,7 +144,7 @@ public class PlacementValidator {
             }
             i++;
         }
-        LOG.info("All tiles have drawn");
+        LOG.info("All tiles have been drawn");
         board.transferRemainingScore(context);
         for (Map.Entry<String, Integer> e : playerMap.entrySet()) {
             String playerName = e.getKey();
