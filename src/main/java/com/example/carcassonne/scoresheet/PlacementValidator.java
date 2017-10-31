@@ -67,19 +67,19 @@ public class PlacementValidator {
         int i = 0;
         if (tileGenerator.hasNextTile()) {
             Tile firstTile = tileGenerator.nextTile();
-            Placement placement = placements[i++];
-            LOG.info("Started turn 0 with tile={}", firstTile.getName());
+            Placement placement = placements[i];
             if (placement.action != ActionType.FIRST_PLACE) {
                 return new Result(false, "firstPlace action is missing");
             }
             int rotation = (placement.tilePlacement != null) ? placement.tilePlacement.rotation : 0;
             board.setFirstTile(firstTile, rotation, context);
-            LOG.info("Placed first tile with x=0, y=0, rotation={}", rotation);
+            LOG.info("[turn {}] Placed first tile {} to x=0, y=0 with rotation={}",
+                    i, firstTile.getName(), rotation);
         }
+        i++;
         while (tileGenerator.hasNextTile()) {
             Tile tile = tileGenerator.nextTile();
             Placement placement = placements[i];
-            LOG.info("Started turn {} with tile={}", i, tile.getName());
             switch (placement.action) {
             case FIRST_PLACE:
                 return new Result(false, "firstPlace action occures twice");
@@ -88,7 +88,7 @@ public class PlacementValidator {
                     String message = "" + i + "th tile is skipped neverthless it can be placed";
                     return new Result(false, message);
                 }
-                LOG.info("Skipped tile");
+                LOG.info("[turn {}] Skipped tile {}", i, tile.getName());
                 break;
             case PLAYER_PLACE:
                 TilePlacement tileP = placement.tilePlacement;
@@ -99,8 +99,8 @@ public class PlacementValidator {
                     return new Result(false, message);
                 }
                 List<Segment> segments = board.placeTile(tileP.x, tileP.y, tileP.rotation, tile, context);
-                LOG.info("{} placed tile with x={}, y={}, rotation={}",
-                        placement.playerName, tileP.x, tileP.y, tileP.rotation);
+                LOG.info("[turn {}] {} placed tile {} to x={}, y={} with rotation={}",
+                        i, placement.playerName, tile.getName(), tileP.x, tileP.y, tileP.rotation);
                 MeeplePlacement meepleP = placement.meeplePlacement;
                 if (meepleP != null) {
                     int meepleColor = playerMap.get(placement.playerName);
@@ -124,8 +124,9 @@ public class PlacementValidator {
                         return new Result(false, message);
                     }
                     board.placeMeeple(targetSegment, meepleColor, context);
-                    LOG.info("{} placed meeple to {} with index={}",
-                            placement.playerName, meepleP.segmentType, meepleP.segmentIndex);
+                    LOG.info("[turn {}] {} placed meeple to {} of tile {} with index={}",
+                            i, placement.playerName, meepleP.segmentType, tile.getName(),
+                            meepleP.segmentIndex);
                 }
                 for (Map.Entry<String, Integer> e : playerMap.entrySet()) {
                     String playerName = e.getKey();
@@ -133,7 +134,8 @@ public class PlacementValidator {
                     for (SegmentType type : SegmentType.values()) {
                         int addedScore = context.getAddedScore(color, type);
                         if (addedScore != 0) {
-                            LOG.info("{} gained {} point from {}", playerName, addedScore, type);
+                            LOG.info("[turn {}] {} gained {} point from {}",
+                                    i, playerName, addedScore, type);
                         }
                     }
                 }
@@ -144,7 +146,7 @@ public class PlacementValidator {
             }
             i++;
         }
-        LOG.info("All tiles have drawn");
+        LOG.info("All tiles have been drawn");
         board.transferRemainingScore(context);
         for (Map.Entry<String, Integer> e : playerMap.entrySet()) {
             String playerName = e.getKey();
